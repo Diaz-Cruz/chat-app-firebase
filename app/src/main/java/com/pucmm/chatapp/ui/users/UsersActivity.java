@@ -46,6 +46,7 @@ public class UsersActivity extends AppCompatActivity {
                 Toast.makeText(this, m, Toast.LENGTH_LONG).show());
 
         viewModel.cargarUsuarios();
+        viewModel.guardarTokenFcm();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.pucmm.chatapp.data.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class UserRepository {
 
@@ -32,5 +33,14 @@ public class UserRepository {
                     cb.onUsuarios(lista);
                 })
                 .addOnFailureListener(e -> cb.onError("No se pudo cargar la lista de usuarios"));
+    }
+
+    public void guardarTokenFcm() {
+        String miUid = FirebaseAuth.getInstance().getUid();
+        if (miUid == null) return;
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnSuccessListener(token ->
+                        db.collection("users").document(miUid).update("fcmToken", token));
     }
 }

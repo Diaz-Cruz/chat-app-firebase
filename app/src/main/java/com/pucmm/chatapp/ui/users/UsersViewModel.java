@@ -31,4 +31,8 @@ public class UsersViewModel extends ViewModel {
     public void cerrarSesion() {
         authRepo.cerrarSesion();
     }
+
+    public void guardarTokenFcm() {
+        userRepo.guardarTokenFcm();
+    }
 }
