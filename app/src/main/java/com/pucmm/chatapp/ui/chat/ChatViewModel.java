@@ -3,8 +3,10 @@ package com.pucmm.chatapp.ui.chat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import com.pucmm.chatapp.data.model.Message;
@@ -28,6 +30,12 @@ public class ChatViewModel extends ViewModel {
 
     public String getMiUid() { return FirebaseAuth.getInstance().getUid(); }
 
+    public String getMiNombre() {
+        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+        String nombre = usuario != null ? usuario.getDisplayName() : null;
+        return nombre != null ? nombre : "Usuario";
+    }
+
     public void iniciar(String otroUid) {
         if (registro != null) return;      // evita abrir dos listeners
 
@@ -47,6 +55,13 @@ public class ChatViewModel extends ViewModel {
         repo.enviarMensaje(chatId, m, new Callback() {
             @Override public void onSuccess() { }
             @Override public void onError(String msg) { error.setValue(msg); }
+        });
+    }
+
+    public void enviarImagen(Uri uri) {
+        repo.enviarImagen(chatId, uri, getMiUid(), getMiNombre(), new Callback() {
+            @Override public void onSuccess() { }
+            @Override public void onError(String m) { error.setValue(m); }
         });
     }
 
