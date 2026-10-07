@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="marca_primario">#3390EC</color>
+    <color name="marca_primario_oscuro">#2B7FD4</color>
+    <color name="marca_fondo">#FFFFFF</color>
+    <color name="marca_superficie">#FFFFFF</color>
+    <color name="marca_texto">#000000</color>
+    <color name="marca_texto_suave">#707579</color>
+    <color name="marca_borde">#E6ECF0</color>
+    <color name="marca_error">#E53935</color>
+
+    <color name="chat_fondo">#DCE9F7</color>
+    <color name="burbuja_propia">#EFFDDE</color>
+    <color name="burbuja_otra">#FFFFFF</color>
+    <color name="hora_propia">#4FAE4E</color>
+    <color name="hora_otra">#A1AAB3</color>
 </resources>
