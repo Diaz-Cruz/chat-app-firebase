@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMensajes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/chat_fondo"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/marca_superficie"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dp">
+
+        <ImageButton
+            android:id="@+id/btnAdjuntar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Adjuntar imagen"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <EditText
+            android:id="@+id/etMensaje"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="Mensaje"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="4"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/marca_texto"
+            android:textColorHint="@color/marca_texto_suave" />
+
+        <ImageButton
+            android:id="@+id/btnEnviar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Enviar"
+            android:src="@android:drawable/ic_menu_send" />
+    </LinearLayout>
+</LinearLayout>
