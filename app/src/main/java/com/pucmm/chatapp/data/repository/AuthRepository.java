@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.pucmm.chatapp.data.model.User;
 import com.pucmm.chatapp.util.Callback;
 
@@ -23,11 +24,19 @@ public class AuthRepository {
     public void registrar(String nombre, String email, String password, @NonNull Callback cb) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(result -> {
-                    String uid = result.getUser().getUid();
-                    User user = new User(uid, nombre, email);
-                    db.collection("users").document(uid).set(user)
-                            .addOnSuccessListener(v -> cb.onSuccess())
-                            .addOnFailureListener(e -> cb.onError("No se pudo guardar el perfil"));
+                    FirebaseUser usuarioFirebase = result.getUser();
+                    String uid = usuarioFirebase.getUid();
+
+                    UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(nombre)
+                            .build();
+
+                    usuarioFirebase.updateProfile(perfil).addOnCompleteListener(t -> {
+                        User user = new User(uid, nombre, email);
+                        db.collection("users").document(uid).set(user)
+                                .addOnSuccessListener(v -> cb.onSuccess())
+                                .addOnFailureListener(e -> cb.onError("No se pudo guardar el perfil"));
+                    });
                 })
                 .addOnFailureListener(e -> cb.onError(traducirError(e)));
     }

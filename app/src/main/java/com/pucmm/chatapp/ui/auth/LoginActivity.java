@@ -8,7 +8,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.pucmm.chatapp.data.repository.AuthRepository;
 import com.pucmm.chatapp.databinding.ActivityLoginBinding;
 import com.pucmm.chatapp.ui.users.UsersActivity;
 
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         // Si ya hay sesion abierta, se salta el login
-        if (new AuthRepository().haySesionActiva()) {
+        if (viewModel.haySesionActiva()) {
             startActivity(new Intent(this, UsersActivity.class));
             finish();
         }

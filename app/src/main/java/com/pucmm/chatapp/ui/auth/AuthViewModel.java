@@ -61,4 +61,8 @@ public class AuthViewModel extends ViewModel {
             }
         });
     }
+
+    public boolean haySesionActiva() {
+        return repo.haySesionActiva();
+    }
 }
