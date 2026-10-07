@@ -47,11 +47,11 @@ public class ChatViewModel extends ViewModel {
         });
     }
 
-    public void enviarTexto(String texto, String miNombre) {
+    public void enviarTexto(String texto) {
         // Requisito del enunciado: no permitir mensajes vacios
         if (texto == null || texto.trim().isEmpty()) return;
 
-        Message m = new Message(getMiUid(), miNombre, texto.trim());
+        Message m = new Message(getMiUid(), getMiNombre(), texto.trim());
         repo.enviarMensaje(chatId, m, new Callback() {
             @Override public void onSuccess() { }
             @Override public void onError(String msg) { error.setValue(msg); }

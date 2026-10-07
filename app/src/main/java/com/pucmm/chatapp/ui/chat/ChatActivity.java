@@ -3,11 +3,12 @@ package com.pucmm.chatapp.ui.chat;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.pucmm.chatapp.databinding.ActivityChatBinding;
 
 public class ChatActivity extends AppCompatActivity {
@@ -15,7 +16,13 @@ public class ChatActivity extends AppCompatActivity {
     private ActivityChatBinding binding;
     private ChatViewModel viewModel;
     private MessageAdapter adapter;
-    private String miNombre;
+
+    private final ActivityResultLauncher<String> selectorImagen =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+                if (uri != null) {
+                    viewModel.enviarImagen(uri);
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +33,6 @@ public class ChatActivity extends AppCompatActivity {
         String otroUid = getIntent().getStringExtra("otroUid");
         String otroNombre = getIntent().getStringExtra("otroNombre");
         setTitle(otroNombre);
-
-        // El nombre se guardo en el perfil de Auth al registrarse (ver AuthRepository)
-        miNombre = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        if (miNombre == null) miNombre = "Usuario";
 
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
@@ -51,9 +54,12 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(this, m, Toast.LENGTH_LONG).show());
 
         binding.btnEnviar.setOnClickListener(v -> {
-            viewModel.enviarTexto(binding.etMensaje.getText().toString(), miNombre);
+            viewModel.enviarTexto(binding.etMensaje.getText().toString());
             binding.etMensaje.setText("");
         });
+
+        // El boton de la galeria abre el selector del sistema
+        binding.btnAdjuntar.setOnClickListener(v -> selectorImagen.launch("image/*"));
 
         viewModel.iniciar(otroUid);
     }
