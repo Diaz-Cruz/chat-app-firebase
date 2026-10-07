@@ -7,6 +7,9 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.pucmm.chatapp.data.model.Message;
 import com.pucmm.chatapp.util.Callback;
+import android.net.Uri;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +55,25 @@ public class ChatRepository {
                 .add(mensaje)
                 .addOnSuccessListener(ref -> cb.onSuccess())
                 .addOnFailureListener(e -> cb.onError("No se pudo enviar el mensaje"));
+    }
+
+    public void enviarImagen(String chatId, Uri uri, String miUid, String miNombre,
+                             @NonNull Callback cb) {
+
+        String nombreArchivo = "chat_images/" + chatId + "/" + System.currentTimeMillis() + ".jpg";
+        StorageReference ref = FirebaseStorage.getInstance().getReference(nombreArchivo);
+
+        ref.putFile(uri)
+                .addOnSuccessListener(tarea -> ref.getDownloadUrl()
+                        .addOnSuccessListener(url -> {
+                            Message m = new Message();
+                            m.setSenderId(miUid);
+                            m.setSenderName(miNombre);
+                            m.setType(Message.TIPO_IMAGEN);
+                            m.setImageUrl(url.toString());
+                            enviarMensaje(chatId, m, cb);
+                        })
+                        .addOnFailureListener(e -> cb.onError("No se pudo obtener la URL de la imagen")))
+                .addOnFailureListener(e -> cb.onError("No se pudo subir la imagen"));
     }
 }
